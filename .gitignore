@@ -26,5 +26,4 @@ ecosystem.config.json
 dockerfile
 
 # Ignorar builds
-dist/
 build/
