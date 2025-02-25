@@ -1,0 +1,27 @@
+trigger:
+- dev_luis  # Reemplaza con el nombre de tu rama
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'  # Asegúrate de usar la versión de Node correcta
+
+- script: |
+    cd frontend
+    npm install
+    npm run build
+  displayName: 'Instalar dependencias y compilar'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'frontend/dist'  # Cambia a 'frontend/build' si usas Create React App
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/dist'
+    artifactName: 'drop'
